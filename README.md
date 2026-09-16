@@ -4,15 +4,15 @@
 
 ---
 
-## 📋 Overview
+## Overview
 
 The **Flask HR Portal** is a comprehensive Human Resources management application that combines core workforce operations (employee directory, leave workflows, attendance logging, and support ticket management) with **AI-driven recruitment intelligence**. Utilizing local NLP sentence transformer embeddings, the portal automatically ranks candidate PDF resumes against job requirements and generates candidate-tailored interview questions.
 
 ---
 
-## 🌟 Key Features
+## Key Features
 
-### 👑 HR Admin Role
+### HR Admin Role
 - **Employee Directory Management**: Complete CRUD operations for staff records with department tagging, position titles, and search filter.
 - **Leave Request Management**: Review, validate date ranges, and approve or reject employee leave applications.
 - **Attendance Management**: Mark and update daily check-ins (`Present`, `Late`, `Absent`) with automatic duplicate date prevention.
@@ -22,7 +22,7 @@ The **Flask HR Portal** is a comprehensive Human Resources management applicatio
 - **Support Ticket Resolution**: Inspect employee help inquiries, type response/resolution notes, and mark tickets as resolved.
 - **HR Insights Dashboard**: Real-time overview of workforce headcount, pending leave requests, today's attendance summary, and recent activity feeds.
 
-### 👤 Employee Role
+### Employee Role
 - **Personalized Employee Dashboard**: Overview of personal profile details, leave request counts, attendance logs, and active support tickets.
 - **Profile View**: View contract details, position, department, and join date (`/my-profile`).
 - **Leave Self-Service**: Submit leave requests with automatic end-date validation and track approval status.
@@ -31,7 +31,7 @@ The **Flask HR Portal** is a comprehensive Human Resources management applicatio
 
 ---
 
-## 📸 Screenshots
+## Screenshots
 
 <p align="center">
   <img src="screenshots/Home_Page.png" width="700" alt="HR Portal Homepage"><br>
@@ -70,7 +70,7 @@ The **Flask HR Portal** is a comprehensive Human Resources management applicatio
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 - **Backend Framework**: Flask (Python 3)
 - **Database & ORM**: SQLite, Flask-SQLAlchemy
@@ -81,7 +81,7 @@ The **Flask HR Portal** is a comprehensive Human Resources management applicatio
 
 ---
 
-## 🧠 How AI Features Work
+## How AI Features Work
 
 ### 1. AI Resume Screening & Semantic Match Scoring
 1. **Dense Vector Embeddings**: Uses `sentence-transformers` (`all-MiniLM-L6-v2`) to encode candidate resume text and job description prompts into 384-dimensional normalized dense vectors.
@@ -98,7 +98,7 @@ The **Flask HR Portal** is a comprehensive Human Resources management applicatio
 
 ---
 
-## 🚀 Setup & Installation
+## Setup & Installation
 
 ### Prerequisites
 - Python 3.10 or higher
@@ -138,7 +138,7 @@ The **Flask HR Portal** is a comprehensive Human Resources management applicatio
 
 ---
 
-## 🔑 Demo Credentials
+## Demo Credentials
 
 The database automatically seeds two initial user accounts upon first launch:
 
@@ -149,7 +149,7 @@ The database automatically seeds two initial user accounts upon first launch:
 
 ---
 
-## 🧪 Running Tests
+## Running Tests
 
 Run the automated unit test suite:
 
@@ -159,7 +159,7 @@ python -m unittest discover -p "test_*.py"
 
 ---
 
-## 🔮 Future Improvements
+## Future Improvements
 
 - **Candidate Self-Service Portal**: Public job portal allowing external candidates to submit applications directly.
 - **Attrition Risk Prediction**: Machine learning model analyzing attendance patterns and tenure to predict turnover risk.
