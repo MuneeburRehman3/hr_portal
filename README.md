@@ -31,6 +31,25 @@ The **Flask HR Portal** is a comprehensive Human Resources management applicatio
 
 ---
 
+## 📸 Screenshots
+
+<p align="center">
+  <img src="screenshots/dashboard.png" width="700" alt="HR Admin Insights Dashboard"><br>
+  <em>HR Admin Insights Dashboard showing workforce metrics, attendance status, and recent activity feeds.</em>
+</p>
+
+<p align="center">
+  <img src="screenshots/match-results.png" width="700" alt="AI Candidate Resume Matching & Ranking"><br>
+  <em>AI-powered Candidate Resume Matching page with semantic similarity scores and skill breakdown.</em>
+</p>
+
+<p align="center">
+  <img src="screenshots/interview-questions.png" width="700" alt="AI-Generated Tailored Interview Questions"><br>
+  <em>AI-generated candidate interview questions tailored to specific skill gaps and matched strengths.</em>
+</p>
+
+---
+
 ## 🛠️ Tech Stack
 
 - **Backend Framework**: Flask (Python 3)
@@ -52,7 +71,7 @@ The **Flask HR Portal** is a comprehensive Human Resources management applicatio
 ### 2. Tailored Interview Question Generator
 1. **Candidate-Specific Slot Filling**: Analyzes the parsed `matched_skills`, `missing_skills`, and overall match score for each candidate.
 2. **Targeted Question Prompts**: Generates 3–4 tailored interview questions:
-   - **Skill Gaps**: Probes missing required skills (e.g. *"Our team relies on Docker, which wasn't highlighted in your resume. Can you describe your experience with Docker?"*).
+   - **Skill Gaps**: Probes missing required skills (e.g. _"Our team relies on Docker, which wasn't highlighted in your resume. Can you describe your experience with Docker?"_).
    - **Matched Strengths**: Deep-dives into technical proficiency for skills found on the resume.
    - **Role Leadership / Fit**: Evaluates general alignment and career goals.
 3. **Rationale Notes**: Provides an explicit rationale note for HR explaining why each question was generated.
@@ -103,10 +122,10 @@ The **Flask HR Portal** is a comprehensive Human Resources management applicatio
 
 The database automatically seeds two initial user accounts upon first launch:
 
-| Role | Username | Password | Access Capabilities |
-| :--- | :--- | :--- | :--- |
-| **HR Admin** | `admin` | `admin123` | Full access (`/dashboard`, `/employees`, `/recruitment`, `/leave`, `/attendance`, `/support`) |
-| **Employee** | `john` | `john123` | Employee access (`/my-profile`, own leave, own attendance, own support tickets) |
+| Role         | Username | Password   | Access Capabilities                                                                           |
+| :----------- | :------- | :--------- | :-------------------------------------------------------------------------------------------- |
+| **HR Admin** | `admin`  | `admin123` | Full access (`/dashboard`, `/employees`, `/recruitment`, `/leave`, `/attendance`, `/support`) |
+| **Employee** | `john`   | `john123`  | Employee access (`/my-profile`, own leave, own attendance, own support tickets)               |
 
 ---
 
