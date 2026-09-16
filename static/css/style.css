@@ -1,0 +1,123 @@
+/* HR Portal Professional Demo Theme Stylesheet */
+
+:root {
+    --primary-color: #0d6efd;
+    --primary-dark: #0a58ca;
+    --primary-light: #e7f1ff;
+    --secondary-bg: #f8f9fa;
+    --card-border-radius: 12px;
+    --card-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+    --hover-shadow: 0 8px 25px rgba(13, 110, 253, 0.12);
+}
+
+body {
+    background-color: var(--secondary-bg);
+    font-family: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+    color: #212529;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+}
+
+main {
+    flex: 1;
+}
+
+/* Navbar Branding */
+.navbar {
+    padding-top: 0.75rem;
+    padding-bottom: 0.75rem;
+    background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%) !important;
+}
+
+.navbar-brand {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+}
+
+.nav-link {
+    font-weight: 500;
+    padding-left: 0.85rem !important;
+    padding-right: 0.85rem !important;
+    transition: color 0.15s ease-in-out;
+}
+
+.nav-link.active {
+    font-weight: 600;
+    border-bottom: 2px solid #ffffff;
+}
+
+/* Card Enhancements */
+.card {
+    border-radius: var(--card-border-radius);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.shadow-sm {
+    box-shadow: var(--card-shadow) !important;
+}
+
+.hero-card {
+    border-radius: 16px;
+    background: linear-gradient(180deg, #ffffff 0%, #f8f9fa 100%);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Homepage Quick Action Cards */
+.quick-action-card {
+    border-radius: var(--card-border-radius);
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    background: #ffffff;
+    transition: all 0.25s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.quick-action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--hover-shadow) !important;
+    border-color: rgba(13, 110, 253, 0.2);
+}
+
+.quick-action-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+/* Empty State Card Styling */
+.empty-state-card {
+    padding: 3.5rem 1.5rem;
+    border-radius: var(--card-border-radius);
+    background: #ffffff;
+}
+
+.empty-state-icon {
+    font-size: 3.5rem;
+    opacity: 0.4;
+    margin-bottom: 1rem;
+}
+
+/* Tables & Badges */
+.table th {
+    font-size: 0.825rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #6c757d;
+}
+
+.badge {
+    font-weight: 600;
+    letter-spacing: 0.2px;
+}
+
+/* Footer */
+footer {
+    background-color: #ffffff;
+    border-top: 1px solid #e9ecef;
+}

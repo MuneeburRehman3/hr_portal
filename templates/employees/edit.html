@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Employee | HR Portal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white py-3 border-bottom">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-pencil-square text-primary fs-4"></i>
+                    <h4 class="fw-bold mb-0">Edit Employee Details</h4>
+                </div>
+            </div>
+            <div class="card-body p-4">
+                <form action="{{ url_for('edit_employee', id=employee.id) }}" method="POST" class="needs-validation" novalidate>
+                    <div class="mb-3">
+                        <label for="name" class="form-label fw-semibold">Full Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ employee.name }}" required>
+                        <div class="invalid-feedback">Please enter the employee's name.</div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="email" class="form-label fw-semibold">Email Address <span class="text-danger">*</span></label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ employee.email }}" required>
+                        <div class="invalid-feedback">Please enter a valid email address.</div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="department" class="form-label fw-semibold">Department</label>
+                            <input type="text" class="form-control" id="department" name="department" value="{{ employee.department or '' }}">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="position" class="form-label fw-semibold">Position / Job Title</label>
+                            <input type="text" class="form-control" id="position" name="position" value="{{ employee.position or '' }}">
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="join_date" class="form-label fw-semibold">Join Date <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" id="join_date" name="join_date" value="{{ employee.join_date.strftime('%Y-%m-%d') if employee.join_date else '' }}" required>
+                        <div class="invalid-feedback">Please select a valid join date.</div>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="{{ url_for('list_employees') }}" class="btn btn-outline-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary d-flex align-items-center gap-1">
+                            <i class="bi bi-save"></i>
+                            <span>Update Employee</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

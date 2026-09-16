@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Access Denied | HR Portal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center py-5">
+    <div class="col-md-8 col-lg-6 text-center">
+        <div class="card border-0 shadow-sm p-5">
+            <div class="card-body">
+                <div class="text-danger mb-3">
+                    <i class="bi bi-shield-lock-fill display-1"></i>
+                </div>
+                <h2 class="fw-bold text-dark mb-2">403 - Access Denied</h2>
+                <p class="text-secondary lead mb-4">
+                    You do not have permission to view this resource. This page is restricted to HR Management role users.
+                </p>
+                <div class="d-flex justify-content-center gap-2">
+                    <a href="{{ url_for('index') }}" class="btn btn-primary rounded-pill px-4">
+                        <i class="bi bi-house-door-fill me-1"></i> Return Home
+                    </a>
+                    {% if current_user.role == 'employee' %}
+                    <a href="{{ url_for('my_profile') }}" class="btn btn-outline-secondary rounded-pill px-4">
+                        <i class="bi bi-person-circle me-1"></i> My Profile
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

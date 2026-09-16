@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}Welcome | HR Portal Demo{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-11">
+        <!-- Hero Banner Section -->
+        <div class="card hero-card bg-white p-5 mb-5 shadow-sm border-0">
+            <div class="card-body text-center py-4">
+                <div class="d-inline-flex align-items-center justify-content-center bg-primary-subtle text-primary rounded-circle p-3 mb-3">
+                    <i class="bi bi-building-fill-gear fs-1"></i>
+                </div>
+                <h1 class="display-5 fw-bold text-dark mb-3">HR Management & AI Portal</h1>
+                <p class="lead text-secondary mx-auto" style="max-width: 720px;">
+                    Streamline workforce management, automate leave workflows, track daily attendance, and screen candidate resumes using local SentenceTransformer AI embeddings.
+                </p>
+                <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
+                    <span class="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill">
+                        <i class="bi bi-check-circle-fill me-1"></i> System Operational
+                    </span>
+                    <span class="badge bg-info-subtle text-info-emphasis border border-info-subtle px-3 py-2 rounded-pill">
+                        <i class="bi bi-database-fill me-1"></i> SQLite Active
+                    </span>
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 rounded-pill">
+                        <i class="bi bi-cpu-fill me-1"></i> AI Screening Enabled
+                    </span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section Header -->
+        <div class="mb-4">
+            <h4 class="fw-bold text-dark mb-1">Quick Action Modules</h4>
+            <p class="text-muted small mb-0">Select a portal module below to manage personnel or recruitment operations.</p>
+        </div>
+
+        <!-- Quick Action Cards Grid -->
+        <div class="row g-4">
+            <!-- 1. Employees Card -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 quick-action-card shadow-sm">
+                    <div class="card-body p-4 text-center d-flex flex-column">
+                        <div class="quick-action-icon bg-primary-subtle text-primary mx-auto">
+                            <i class="bi bi-people-fill fs-3"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-2">Employees</h5>
+                        <p class="text-muted small mb-4 flex-grow-1">Maintain full staff profiles, contact emails, and organizational department records.</p>
+                        <a href="{{ url_for('list_employees') }}" class="btn btn-primary btn-sm rounded-pill w-100 py-2 d-flex align-items-center justify-content-center gap-1">
+                            <span>Manage Directory</span>
+                            <i class="bi bi-arrow-right short me-0"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Leave Management Card -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 quick-action-card shadow-sm">
+                    <div class="card-body p-4 text-center d-flex flex-column">
+                        <div class="quick-action-icon bg-warning-subtle text-warning-emphasis mx-auto">
+                            <i class="bi bi-calendar2-week-fill fs-3"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-2">Leave Requests</h5>
+                        <p class="text-muted small mb-4 flex-grow-1">Submit time-off requests, validate date ranges, and manage approval statuses.</p>
+                        <a href="{{ url_for('list_leaves') }}" class="btn btn-warning text-dark btn-sm rounded-pill w-100 py-2 d-flex align-items-center justify-content-center gap-1">
+                            <span>Review Requests</span>
+                            <i class="bi bi-arrow-right short me-0"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Attendance Card -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 quick-action-card shadow-sm">
+                    <div class="card-body p-4 text-center d-flex flex-column">
+                        <div class="quick-action-icon bg-success-subtle text-success mx-auto">
+                            <i class="bi bi-clock-history fs-3"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-2">Attendance</h5>
+                        <p class="text-muted small mb-4 flex-grow-1">Mark daily check-ins (Present, Absent, Late) with automatic duplicate prevention.</p>
+                        <a href="{{ url_for('list_attendance') }}" class="btn btn-success btn-sm rounded-pill w-100 py-2 d-flex align-items-center justify-content-center gap-1">
+                            <span>Track Attendance</span>
+                            <i class="bi bi-arrow-right short me-0"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Recruitment AI Screening Card -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card h-100 quick-action-card shadow-sm">
+                    <div class="card-body p-4 text-center d-flex flex-column">
+                        <div class="quick-action-icon bg-info-subtle text-info-emphasis mx-auto">
+                            <i class="bi bi-stars fs-3"></i>
+                        </div>
+                        <h5 class="fw-bold text-dark mb-2">AI Recruitment</h5>
+                        <p class="text-muted small mb-4 flex-grow-1">Post job requisitions, upload candidate PDF resumes, and rank by AI similarity scores.</p>
+                        <a href="{{ url_for('list_jobs') }}" class="btn btn-info text-white btn-sm rounded-pill w-100 py-2 d-flex align-items-center justify-content-center gap-1">
+                            <span>Screen Resumes</span>
+                            <i class="bi bi-arrow-right short me-0"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Mark Attendance | HR Portal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white py-3 border-bottom">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-calendar-check text-primary fs-4"></i>
+                    <h4 class="fw-bold mb-0">Mark / Update Attendance</h4>
+                </div>
+            </div>
+            <div class="card-body p-4">
+                {% if employees %}
+                <form action="{{ url_for('mark_attendance') }}" method="POST" class="needs-validation" novalidate>
+                    <!-- Employee Dropdown Selection -->
+                    <div class="mb-3">
+                        <label for="employee_id" class="form-label fw-semibold">Select Employee <span class="text-danger">*</span></label>
+                        <select class="form-select" id="employee_id" name="employee_id" required>
+                            <option value="" disabled {% if not preselect_emp_id %}selected{% endif %}>-- Select Employee --</option>
+                            {% for emp in employees %}
+                                <option value="{{ emp.id }}" {% if preselect_emp_id == emp.id %}selected{% endif %}>
+                                    {{ emp.name }} ({{ emp.department or 'General' }} - {{ emp.email }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <div class="invalid-feedback">Please select an employee.</div>
+                    </div>
+
+                    <!-- Attendance Date -->
+                    <div class="mb-3">
+                        <label for="date" class="form-label fw-semibold">Attendance Date <span class="text-danger">*</span></label>
+                        <input type="date" class="form-control" id="date" name="date" value="{{ preselect_date or today_date }}" required>
+                        <div class="invalid-feedback">Please select a valid date.</div>
+                    </div>
+
+                    <!-- Attendance Status Radio Options -->
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold d-block">Status <span class="text-danger">*</span></label>
+                        <div class="btn-group w-100" role="group" aria-label="Attendance Status">
+                            <input type="radio" class="btn-check" name="status" id="status_present" value="Present" checked>
+                            <label class="btn btn-outline-success py-2" for="status_present">
+                                <i class="bi bi-check-circle-fill me-1"></i> Present
+                            </label>
+
+                            <input type="radio" class="btn-check" name="status" id="status_late" value="Late">
+                            <label class="btn btn-outline-warning py-2" for="status_late">
+                                <i class="bi bi-clock-history me-1"></i> Late
+                            </label>
+
+                            <input type="radio" class="btn-check" name="status" id="status_absent" value="Absent">
+                            <label class="btn btn-outline-danger py-2" for="status_absent">
+                                <i class="bi bi-x-circle-fill me-1"></i> Absent
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info py-2 px-3 small d-flex align-items-center gap-2 mb-4">
+                        <i class="bi bi-info-circle-fill fs-5"></i>
+                        <span>If an attendance record already exists for this employee on the selected date, submitting will update their status.</span>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="{{ url_for('list_attendance') }}" class="btn btn-outline-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary d-flex align-items-center gap-1">
+                            <i class="bi bi-check-lg"></i>
+                            <span>Save Attendance</span>
+                        </button>
+                    </div>
+                </form>
+                {% else %}
+                <div class="text-center py-4">
+                    <p class="text-warning fw-semibold mb-3">No employees found in the directory. You need to create an employee before marking attendance.</p>
+                    <a href="{{ url_for('add_employee') }}" class="btn btn-primary">
+                        <i class="bi bi-person-plus-fill me-1"></i> Add Employee First
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

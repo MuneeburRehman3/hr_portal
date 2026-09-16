@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}Submit Candidate PDF Resume | HR Portal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-7">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white py-3 border-bottom">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-file-earmark-pdf-fill text-danger fs-4"></i>
+                    <h4 class="fw-bold mb-0">Submit Candidate PDF Resume</h4>
+                </div>
+            </div>
+            <div class="card-body p-4">
+                {% if jobs %}
+                <form action="{{ url_for('add_candidate') }}" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+                    <!-- Job Selection -->
+                    <div class="mb-3">
+                        <label for="applied_job_id" class="form-label fw-semibold">Target Job Opening <span class="text-danger">*</span></label>
+                        <select class="form-select" id="applied_job_id" name="applied_job_id" required>
+                            <option value="" disabled {% if not preselect_job_id %}selected{% endif %}>-- Select Job Opening --</option>
+                            {% for job in jobs %}
+                                <option value="{{ job.id }}" {% if preselect_job_id == job.id %}selected{% endif %}>
+                                    {{ job.title }} ({{ job.department or 'General' }})
+                                </option>
+                            {% endfor %}
+                        </select>
+                        <div class="invalid-feedback">Please select a job opening.</div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="name" class="form-label fw-semibold">Candidate Name <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="e.g. Alex Rivera" required>
+                            <div class="invalid-feedback">Please enter candidate name.</div>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="email" class="form-label fw-semibold">Candidate Email <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="e.g. alex.rivera@example.com" required>
+                            <div class="invalid-feedback">Please enter candidate email.</div>
+                        </div>
+                    </div>
+
+                    <!-- PDF File Upload Input -->
+                    <div class="mb-4">
+                        <label for="resume_file" class="form-label fw-semibold">Upload Resume PDF <span class="text-danger">*</span></label>
+                        <input type="file" class="form-control" id="resume_file" name="resume_file" accept=".pdf,application/pdf" required>
+                        <div class="form-text text-muted">
+                            <i class="bi bi-info-circle me-1"></i> Upload a text-readable <strong>.pdf</strong> file. Text will be extracted automatically for AI screening.
+                        </div>
+                        <div class="invalid-feedback">Please select a valid PDF file.</div>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="{{ url_for('list_jobs') }}" class="btn btn-outline-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary d-flex align-items-center gap-1">
+                            <i class="bi bi-upload"></i>
+                            <span>Upload & Screen Resume</span>
+                        </button>
+                    </div>
+                </form>
+                {% else %}
+                <div class="text-center py-4">
+                    <p class="text-warning fw-semibold mb-3">No active job postings found. Create a job posting before submitting candidate resumes.</p>
+                    <a href="{{ url_for('add_job') }}" class="btn btn-primary">
+                        <i class="bi bi-plus-circle me-1"></i> Create Job Posting First
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

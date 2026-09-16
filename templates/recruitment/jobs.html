@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Recruitment & Job Postings | HR Portal{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold text-primary mb-1">Recruitment & Job Openings</h2>
+        <p class="text-muted mb-0">Manage job requisitions and candidate AI resume screening.</p>
+    </div>
+    <div class="d-flex gap-2">
+        <a href="{{ url_for('add_job') }}" class="btn btn-primary d-flex align-items-center gap-2">
+            <i class="bi bi-briefcase-fill"></i>
+            <span>Post New Job</span>
+        </a>
+        <a href="{{ url_for('add_candidate') }}" class="btn btn-outline-primary d-flex align-items-center gap-2">
+            <i class="bi bi-file-earmark-person-fill"></i>
+            <span>Submit Candidate Resume</span>
+        </a>
+    </div>
+</div>
+
+{% if jobs %}
+<div class="row g-4">
+    {% for job in jobs %}
+    <div class="col-md-6 col-lg-4">
+        <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body p-4 d-flex flex-column">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <h5 class="fw-bold text-dark mb-0">{{ job.title }}</h5>
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle">
+                        {{ job.department or 'General' }}
+                    </span>
+                </div>
+
+                <div class="text-muted small mb-3 text-truncate-2" style="max-height: 48px; overflow: hidden;">
+                    {{ job.description }}
+                </div>
+
+                <div class="mb-3">
+                    <small class="fw-semibold text-muted d-block mb-1">Required Skills:</small>
+                    {% if job.skills_list %}
+                        <div class="d-flex flex-wrap gap-1">
+                            {% for skill in job.skills_list %}
+                                <span class="badge bg-secondary-subtle text-dark border small">{{ skill }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <span class="text-muted small">No specific skills listed</span>
+                    {% endif %}
+                </div>
+
+                <div class="mt-auto border-top pt-3 d-flex justify-content-between align-items-center">
+                    <span class="badge bg-info-subtle text-info-emphasis border border-info-subtle px-2 py-1">
+                        <i class="bi bi-people-fill me-1"></i> {{ job.candidates | length }} Candidate(s)
+                    </span>
+                    <div class="btn-group btn-group-sm">
+                        <!-- View Matches Button -->
+                        <a href="{{ url_for('job_matches', id=job.id) }}" class="btn btn-primary d-flex align-items-center gap-1" title="View AI Candidate Matches">
+                            <i class="bi bi-stars"></i> View Matches
+                        </a>
+                        <!-- Add Candidate Button -->
+                        <a href="{{ url_for('add_candidate', job_id=job.id) }}" class="btn btn-outline-primary" title="Add Candidate">
+                            <i class="bi bi-plus-lg"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="card border-0 shadow-sm text-center py-5">
+    <div class="card-body">
+        <div class="text-muted mb-3">
+            <i class="bi bi-briefcase display-1 text-secondary opacity-50"></i>
+        </div>
+        <h4 class="fw-bold">No Open Job Postings</h4>
+        <p class="text-muted">Create your first job posting to start collecting candidate resumes for screening.</p>
+        <a href="{{ url_for('add_job') }}" class="btn btn-primary mt-2">
+            <i class="bi bi-plus-circle me-1"></i> Create Job Posting
+        </a>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

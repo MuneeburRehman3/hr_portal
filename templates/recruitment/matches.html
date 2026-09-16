@@ -1,0 +1,229 @@
+{% extends "base.html" %}
+
+{% block title %}Candidate Matches | {{ job.title }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <!-- Job Header Banner -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle mb-1">
+                        {{ job.department or 'General' }}
+                    </span>
+                    <h3 class="fw-bold mb-0 text-dark">{{ job.title }}</h3>
+                </div>
+                <div class="d-flex gap-2">
+                    <a href="{{ url_for('add_candidate', job_id=job.id) }}" class="btn btn-primary btn-sm d-flex align-items-center gap-1">
+                        <i class="bi bi-file-earmark-pdf-fill"></i> Upload Candidate PDF
+                    </a>
+                    <a href="{{ url_for('list_jobs') }}" class="btn btn-outline-secondary btn-sm">
+                        &larr; Back to Jobs
+                    </a>
+                </div>
+            </div>
+            <div class="card-body p-4">
+                <div class="mb-2">
+                    <strong class="text-muted small text-uppercase">Required Skills:</strong>
+                    {% if job.skills_list %}
+                        <div class="d-inline-flex flex-wrap gap-1 ms-2">
+                            {% for skill in job.skills_list %}
+                                <span class="badge bg-secondary-subtle text-dark border">{{ skill }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <span class="text-muted small ms-2">No required skills specified</span>
+                    {% endif %}
+                </div>
+                <div class="text-muted small">
+                    Showing candidate applications ranked by AI semantic match score (highest first).
+                </div>
+            </div>
+        </div>
+
+        <!-- Candidate Ranking List -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="fw-bold text-primary mb-0">
+                <i class="bi bi-trophy-fill me-2 text-warning"></i>Ranked Candidate Matches ({{ candidates | length }})
+            </h4>
+        </div>
+
+        {% if candidates %}
+        <div class="d-flex flex-column gap-3">
+            {% for candidate in candidates %}
+            {% set score = candidate.match_analysis.score %}
+            {% set matched_skills = candidate.match_analysis.matched_skills %}
+            {% set missing_skills = candidate.match_analysis.missing_skills %}
+            
+            <div class="card border-0 shadow-sm">
+                <div class="card-body p-4">
+                    <div class="row align-items-center">
+                        <!-- Rank Number & Candidate Info -->
+                        <div class="col-md-5 mb-3 mb-md-0">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="badge rounded-circle bg-light text-dark border fs-6 d-flex align-items-center justify-content-center" style="width: 42px; height: 42px;">
+                                    #{{ loop.index }}
+                                </div>
+                                <div>
+                                    <h5 class="fw-bold mb-1 text-dark">{{ candidate.name }}</h5>
+                                    <div class="text-muted small"><i class="bi bi-envelope me-1"></i>{{ candidate.email }}</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Overall Match Percentage Progress Bar -->
+                        <div class="col-md-7">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span class="fw-semibold small text-muted">AI Semantic Match Score</span>
+                                {% if score >= 70 %}
+                                    <span class="badge bg-success fs-6 px-3 py-1">
+                                        <i class="bi bi-stars me-1"></i>{{ score }}% Match
+                                    </span>
+                                {% elif score >= 40 %}
+                                    <span class="badge bg-warning text-dark fs-6 px-3 py-1">
+                                        <i class="bi bi-stars me-1"></i>{{ score }}% Match
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-danger fs-6 px-3 py-1">
+                                        <i class="bi bi-stars me-1"></i>{{ score }}% Match
+                                    </span>
+                                {% endif %}
+                            </div>
+
+                            <!-- Color-coded Progress Bar -->
+                            <div class="progress" style="height: 10px;">
+                                <div class="progress-bar {% if score >= 70 %}bg-success{% elif score >= 40 %}bg-warning{% else %}bg-danger{% endif %}"
+                                     role="progressbar"
+                                     style="width: {{ score }}%;"
+                                     aria-valuenow="{{ score }}"
+                                     aria-valuemin="0"
+                                     aria-valuemax="100"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr class="my-3 text-muted opacity-25">
+
+                    <!-- Skill Match Breakdown -->
+                    <div class="row g-3">
+                        <!-- Matched Skills (Green) -->
+                        <div class="col-md-6">
+                            <div class="p-3 bg-success-subtle rounded-3 border border-success-subtle h-100">
+                                <div class="fw-bold small text-success mb-2 d-flex align-items-center gap-1">
+                                    <i class="bi bi-check-circle-fill"></i>
+                                    <span>Matched Required Skills ({{ matched_skills | length }})</span>
+                                </div>
+                                {% if matched_skills %}
+                                    <div class="d-flex flex-wrap gap-1">
+                                        {% for skill in matched_skills %}
+                                            <span class="badge bg-success text-white">
+                                                <i class="bi bi-check-lg me-1"></i>{{ skill }}
+                                            </span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <span class="text-muted small italic">No required skills matched.</span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Missing Skills (Red/Gray) -->
+                        <div class="col-md-6">
+                            <div class="p-3 bg-danger-subtle rounded-3 border border-danger-subtle h-100">
+                                <div class="fw-bold small text-danger mb-2 d-flex align-items-center gap-1">
+                                    <i class="bi bi-x-circle-fill"></i>
+                                    <span>Missing Required Skills ({{ missing_skills | length }})</span>
+                                </div>
+                                {% if missing_skills %}
+                                    <div class="d-flex flex-wrap gap-1">
+                                        {% for skill in missing_skills %}
+                                            <span class="badge bg-danger text-white">
+                                                <i class="bi bi-x-lg me-1"></i>{{ skill }}
+                                            </span>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <span class="text-success small fw-semibold">
+                                        <i class="bi bi-check-all me-1"></i>All required skills satisfied!
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    {% set questions = candidate.match_analysis.interview_questions %}
+
+                    <!-- Collapsible Suggested Interview Questions & Controls Drawer -->
+                    <div class="mt-3 pt-3 border-top">
+                        <div class="d-flex flex-wrap justify-content-between align-items-center gap-2">
+                            <button class="btn btn-sm btn-outline-primary d-inline-flex align-items-center gap-1 fw-semibold shadow-sm" type="button" data-bs-toggle="collapse" data-bs-target="#questionsCollapse{{ candidate.id }}" aria-expanded="false">
+                                <i class="bi bi-patch-question-fill text-primary"></i>
+                                <span>Suggested Interview Questions ({{ questions | length }})</span>
+                                <i class="bi bi-chevron-down ms-1"></i>
+                            </button>
+
+                            <div class="d-flex align-items-center gap-2">
+                                <button class="btn btn-sm btn-link text-decoration-none text-muted small p-0" type="button" data-bs-toggle="collapse" data-bs-target="#resumeCollapse{{ candidate.id }}" aria-expanded="false">
+                                    <i class="bi bi-file-text me-1"></i> Extracted Resume Text
+                                </button>
+                                {% if candidate.resume_filename %}
+                                <a href="{{ url_for('download_resume', filename=candidate.resume_filename) }}" target="_blank" class="btn btn-sm btn-outline-secondary d-inline-flex align-items-center gap-1 ms-2">
+                                    <i class="bi bi-file-earmark-pdf-fill"></i> View Original PDF
+                                </a>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Questions Collapsible Container -->
+                        <div class="collapse mt-3" id="questionsCollapse{{ candidate.id }}">
+                            <div class="card card-body bg-light border-0 shadow-sm">
+                                <div class="fw-bold text-dark mb-2 d-flex align-items-center gap-1">
+                                    <i class="bi bi-stars text-primary"></i>
+                                    <span>AI Suggested Interview Questions (Tailored to Candidate Gaps & Strengths):</span>
+                                </div>
+                                <div class="d-flex flex-column gap-3">
+                                    {% for q in questions %}
+                                    <div class="p-3 bg-white rounded border border-secondary-subtle shadow-sm">
+                                        <div class="d-flex justify-content-between align-items-start gap-2 mb-2">
+                                            <span class="badge {{ q.badge_class }} px-2 py-1">
+                                                <i class="bi {{ q.icon }} me-1"></i>{{ q.category }}: {{ q.target }}
+                                            </span>
+                                            <small class="text-muted fst-italic">Question #{{ loop.index }}</small>
+                                        </div>
+                                        <h6 class="fw-bold text-dark mb-1" style="font-size: 0.95rem;">"{{ q.question }}"</h6>
+                                        <small class="text-muted"><i class="bi bi-info-circle me-1"></i>{{ q.rationale }}</small>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Resume Text Collapsible Container -->
+                        <div class="collapse mt-2" id="resumeCollapse{{ candidate.id }}">
+                            <div class="p-3 bg-light rounded border text-monospace text-secondary small" style="max-height: 200px; overflow-y: auto; white-space: pre-wrap;">
+                                {{ candidate.resume_text }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="card border-0 shadow-sm text-center py-5">
+            <div class="card-body">
+                <div class="text-muted mb-3">
+                    <i class="bi bi-file-earmark-pdf display-1 text-secondary opacity-50"></i>
+                </div>
+                <h4 class="fw-bold">No Candidates Applied Yet</h4>
+                <p class="text-muted">Upload candidate PDF resumes to view AI match scores and skill analysis.</p>
+                <a href="{{ url_for('add_candidate', job_id=job.id) }}" class="btn btn-primary mt-2">
+                    <i class="bi bi-upload me-1"></i> Upload Candidate PDF
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block title %}{{ job.title }} | Job Details & AI Screening{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <!-- Job Header & Details Card -->
+        <div class="card border-0 shadow-sm mb-4">
+            <div class="card-header bg-white py-3 border-bottom d-flex justify-content-between align-items-center">
+                <div>
+                    <span class="badge bg-primary-subtle text-primary border border-primary-subtle mb-1">
+                        {{ job.department or 'General' }}
+                    </span>
+                    <h3 class="fw-bold mb-0 text-dark">{{ job.title }}</h3>
+                </div>
+                <a href="{{ url_for('add_candidate', job_id=job.id) }}" class="btn btn-primary d-flex align-items-center gap-2">
+                    <i class="bi bi-file-earmark-person-fill"></i>
+                    <span>Submit Candidate Resume</span>
+                </a>
+            </div>
+            <div class="card-body p-4">
+                <div class="mb-3">
+                    <h6 class="fw-bold text-muted text-uppercase fs-7">Required Skills</h6>
+                    {% if job.skills_list %}
+                        <div class="d-flex flex-wrap gap-1">
+                            {% for skill in job.skills_list %}
+                                <span class="badge bg-secondary-subtle text-dark border">{{ skill }}</span>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <p class="text-muted small mb-0">No specific required skills listed.</p>
+                    {% endif %}
+                </div>
+
+                <div>
+                    <h6 class="fw-bold text-muted text-uppercase fs-7">Job Description</h6>
+                    <p class="text-secondary whitespace-pre-line mb-0">{{ job.description }}</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Candidates / Applicants AI Screening Section -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div>
+                <h4 class="fw-bold text-primary mb-1">
+                    <i class="bi bi-cpu-fill me-2"></i>AI Candidate Match Analysis ({{ candidates | length }})
+                </h4>
+                <p class="text-muted small mb-0">Candidates are ranked automatically by AI semantic similarity score (using <code>all-MiniLM-L6-v2</code>).</p>
+            </div>
+            <a href="{{ url_for('list_jobs') }}" class="btn btn-sm btn-outline-secondary">
+                &larr; Back to Job Postings
+            </a>
+        </div>
+
+        {% if candidates %}
+        <div class="row g-4">
+            {% for candidate in candidates %}
+            {% set analysis = candidate.match_analysis %}
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-white py-3 border-bottom">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <div>
+                                <h5 class="fw-bold text-dark mb-0">{{ candidate.name }}</h5>
+                                <small class="text-muted"><i class="bi bi-envelope me-1"></i>{{ candidate.email }}</small>
+                            </div>
+                            <!-- AI Match Percentage Badge -->
+                            <div class="text-end">
+                                {% if analysis.score >= 70 %}
+                                    <span class="badge bg-success fs-6 px-3 py-2">
+                                        <i class="bi bi-stars me-1"></i> {{ analysis.score }}% Match
+                                    </span>
+                                {% elif analysis.score >= 45 %}
+                                    <span class="badge bg-warning text-dark fs-6 px-3 py-2">
+                                        <i class="bi bi-stars me-1"></i> {{ analysis.score }}% Match
+                                    </span>
+                                {% else %}
+                                    <span class="badge bg-secondary fs-6 px-3 py-2">
+                                        <i class="bi bi-stars me-1"></i> {{ analysis.score }}% Match
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Match Score Progress Bar -->
+                        <div class="progress mt-2" style="height: 6px;">
+                            <div class="progress-bar {% if analysis.score >= 70 %}bg-success{% elif analysis.score >= 45 %}bg-warning{% else %}bg-secondary{% endif %}" role="progressbar" style="width: {{ analysis.score }}%;" aria-valuenow="{{ analysis.score }}" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
+
+                    <div class="card-body p-3">
+                        <!-- Skill Match Breakdown -->
+                        <div class="mb-3 bg-light p-3 rounded border">
+                            <h6 class="fw-bold text-dark small mb-2"><i class="bi bi-journal-check me-1 text-primary"></i>Skill Match Breakdown</h6>
+                            
+                            <div class="mb-2">
+                                <span class="small fw-semibold text-success me-2">Matched Skills:</span>
+                                {% if analysis.matched_skills %}
+                                    {% for skill in analysis.matched_skills %}
+                                        <span class="badge bg-success-subtle text-success border border-success-subtle me-1">
+                                            <i class="bi bi-check-circle-fill me-1"></i>{{ skill }}
+                                        </span>
+                                    {% endfor %}
+                                {% else %}
+                                    <span class="text-muted small">None detected</span>
+                                {% endif %}
+                            </div>
+
+                            <div>
+                                <span class="small fw-semibold text-danger me-2">Missing Skills:</span>
+                                {% if analysis.missing_skills %}
+                                    {% for skill in analysis.missing_skills %}
+                                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle me-1">
+                                            <i class="bi bi-x-circle-fill me-1"></i>{{ skill }}
+                                        </span>
+                                    {% endfor %}
+                                {% else %}
+                                    <span class="text-muted small">All required skills present!</span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Resume Text Snippet -->
+                        <div>
+                            <small class="fw-semibold text-muted d-block mb-1">Submitted Resume Text:</small>
+                            <div class="p-3 bg-body-tertiary rounded border text-monospace text-secondary small" style="max-height: 160px; overflow-y: auto; white-space: pre-wrap;">
+                                {{ candidate.resume_text }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="card border-0 shadow-sm text-center py-4">
+            <div class="card-body">
+                <p class="text-muted mb-3">No candidates have applied for this position yet.</p>
+                <a href="{{ url_for('add_candidate', job_id=job.id) }}" class="btn btn-outline-primary btn-sm">
+                    <i class="bi bi-plus-circle me-1"></i> Add Candidate Resume
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

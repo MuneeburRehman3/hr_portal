@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+
+{% block title %}Leave Requests | HR Portal{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold text-primary mb-1">Leave Requests Management</h2>
+        <p class="text-muted mb-0">Review employee leave applications and manage approval statuses.</p>
+    </div>
+    <a href="{{ url_for('apply_leave') }}" class="btn btn-primary d-flex align-items-center gap-2">
+        <i class="bi bi-plus-circle-fill"></i>
+        <span>Submit Leave Request</span>
+    </a>
+</div>
+
+{% if leaves %}
+<div class="card border-0 shadow-sm">
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col" class="ps-4">Req #</th>
+                        <th scope="col">Employee</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Date Range</th>
+                        <th scope="col">Duration</th>
+                        <th scope="col">Reason</th>
+                        <th scope="col">Status</th>
+                        {% if current_user.role == 'hr' %}
+                        <th scope="col" class="text-end pe-4">Actions</th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for req in leaves %}
+                    <tr>
+                        <td class="ps-4 fw-semibold text-muted">#{{ req.id }}</td>
+                        <td>
+                            <div class="fw-bold">{{ req.employee.name if req.employee else 'Unknown' }}</div>
+                            <small class="text-muted">{{ req.employee.email if req.employee else '' }}</small>
+                        </td>
+                        <td>
+                            <span class="badge bg-info-subtle text-info-emphasis border border-info-subtle px-2 py-1">
+                                {{ req.leave_type }}
+                            </span>
+                        </td>
+                        <td>
+                            <small class="d-block text-dark fw-semibold">
+                                {{ req.start_date.strftime('%b %d, %Y') }} &rarr; {{ req.end_date.strftime('%b %d, %Y') }}
+                            </small>
+                        </td>
+                        <td>
+                            <span class="fw-semibold">{{ req.duration_days }} day(s)</span>
+                        </td>
+                        <td>
+                            <span class="text-truncate d-inline-block" style="max-width: 180px;" title="{{ req.reason or 'No reason provided' }}">
+                                {{ req.reason or '-' }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if req.status == 'Pending' %}
+                                <span class="badge bg-warning text-dark border border-warning-subtle">
+                                    <i class="bi bi-clock me-1"></i>Pending
+                                </span>
+                            {% elif req.status == 'Approved' %}
+                                <span class="badge bg-success">
+                                    <i class="bi bi-check-circle-fill me-1"></i>Approved
+                                </span>
+                            {% elif req.status == 'Rejected' %}
+                                <span class="badge bg-danger">
+                                    <i class="bi bi-x-circle-fill me-1"></i>Rejected
+                                </span>
+                            {% endif %}
+                        </td>
+                        {% if current_user.role == 'hr' %}
+                        <td class="text-end pe-4">
+                            {% if req.status == 'Pending' %}
+                            <div class="btn-group btn-group-sm" role="group">
+                                <form action="{{ url_for('approve_leave', id=req.id) }}" method="POST" class="d-inline">
+                                    <button type="submit" class="btn btn-outline-success rounded-end-0" title="Approve Request">
+                                        <i class="bi bi-check-lg me-1"></i> Approve
+                                    </button>
+                                </form>
+                                <form action="{{ url_for('reject_leave', id=req.id) }}" method="POST" class="d-inline">
+                                    <button type="submit" class="btn btn-outline-danger rounded-start-0" title="Reject Request">
+                                        <i class="bi bi-x-lg me-1"></i> Reject
+                                    </button>
+                                </form>
+                            </div>
+                            {% else %}
+                            <span class="text-muted small">Status Finalized</span>
+                            {% endif %}
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% else %}
+<div class="card border-0 shadow-sm text-center py-5">
+    <div class="card-body">
+        <div class="text-muted mb-3">
+            <i class="bi bi-calendar2-week display-1 text-secondary opacity-50"></i>
+        </div>
+        <h4 class="fw-bold">No Leave Requests Found</h4>
+        <p class="text-muted">Submit a leave request for an employee to begin tracking applications.</p>
+        <a href="{{ url_for('apply_leave') }}" class="btn btn-primary mt-2">
+            <i class="bi bi-plus-circle me-1"></i> Submit Leave Request
+        </a>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

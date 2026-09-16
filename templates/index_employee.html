@@ -1,0 +1,228 @@
+{% extends "base.html" %}
+
+{% block title %}Employee Portal | HR Portal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-11">
+
+        <!-- Welcome Banner Card -->
+        <div class="card border-0 shadow-sm bg-primary text-white p-4 mb-4 rounded-3">
+            <div class="card-body d-md-flex align-items-center justify-content-between">
+                <div>
+                    <span class="badge bg-light text-primary fw-bold text-uppercase px-3 py-1 mb-2">Employee Portal</span>
+                    <h2 class="fw-bold mb-1">Welcome back, {{ employee.name if employee else current_user.username }}!</h2>
+                    <p class="mb-0 opacity-75">
+                        {{ employee.position if employee and employee.position else 'Team Member' }}
+                        {% if employee and employee.department %} &bull; {{ employee.department }}{% endif %}
+                    </p>
+                </div>
+                <div class="mt-3 mt-md-0 d-flex gap-2">
+                    <a href="{{ url_for('apply_leave') }}" class="btn btn-light text-primary fw-semibold btn-sm px-3">
+                        <i class="bi bi-plus-circle me-1"></i> Request Leave
+                    </a>
+                    <a href="{{ url_for('create_ticket') }}" class="btn btn-outline-light btn-sm px-3">
+                        <i class="bi bi-headset me-1"></i> Contact HR
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3 Summary Metrics Cards -->
+        <div class="row g-4 mb-4">
+
+            <!-- 1. Profile Summary -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4 text-center d-flex flex-column">
+                        <div class="d-inline-flex align-items-center justify-content-center bg-primary-subtle text-primary rounded-circle p-3 mb-3 mx-auto">
+                            <i class="bi bi-person-vcard fs-3"></i>
+                        </div>
+                        <h6 class="fw-bold text-dark mb-1">Profile Summary</h6>
+                        <small class="text-muted mb-3 flex-grow-1">
+                            {{ employee.email if employee else current_user.email }}
+                        </small>
+                        <div class="bg-light p-2 rounded mb-3 text-start small">
+                            <div class="d-flex justify-content-between mb-1">
+                                <span class="text-muted">Dept:</span>
+                                <span class="fw-semibold text-dark">{{ employee.department if employee and employee.department else 'N/A' }}</span>
+                            </div>
+                            <div class="d-flex justify-content-between">
+                                <span class="text-muted">Joined:</span>
+                                <span class="fw-semibold text-dark">{{ employee.join_date.strftime('%b %Y') if employee and employee.join_date else 'N/A' }}</span>
+                            </div>
+                        </div>
+                        <a href="{{ url_for('my_profile') }}" class="btn btn-outline-primary btn-sm rounded-pill w-100">
+                            View Full Profile
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Leave Request Summary -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4 text-center d-flex flex-column">
+                        <div class="d-inline-flex align-items-center justify-content-center bg-warning-subtle text-warning-emphasis rounded-circle p-3 mb-3 mx-auto">
+                            <i class="bi bi-calendar2-week fs-3"></i>
+                        </div>
+                        <h6 class="fw-bold text-dark mb-1">Leave Requests</h6>
+                        <h3 class="fw-bold text-dark mb-2">{{ leave_stats.total }}</h3>
+                        <div class="d-flex justify-content-around bg-light p-2 rounded mb-3 small text-center">
+                            <div>
+                                <span class="d-block text-warning fw-bold">{{ leave_stats.pending }}</span>
+                                <span class="text-muted extra-small">Pending</span>
+                            </div>
+                            <div>
+                                <span class="d-block text-success fw-bold">{{ leave_stats.approved }}</span>
+                                <span class="text-muted extra-small">Approved</span>
+                            </div>
+                            <div>
+                                <span class="d-block text-danger fw-bold">{{ leave_stats.rejected }}</span>
+                                <span class="text-muted extra-small">Rejected</span>
+                            </div>
+                        </div>
+                        <a href="{{ url_for('list_leaves') }}" class="btn btn-outline-warning text-dark btn-sm rounded-pill w-100">
+                            My Leave History
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Attendance Summary -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4 text-center d-flex flex-column">
+                        <div class="d-inline-flex align-items-center justify-content-center bg-success-subtle text-success rounded-circle p-3 mb-3 mx-auto">
+                            <i class="bi bi-clock-history fs-3"></i>
+                        </div>
+                        <h6 class="fw-bold text-dark mb-1">Attendance Log</h6>
+                        <h3 class="fw-bold text-dark mb-2">{{ attendance_stats.present + attendance_stats.late + attendance_stats.absent }}</h3>
+                        <div class="d-flex justify-content-around bg-light p-2 rounded mb-3 small text-center">
+                            <div>
+                                <span class="d-block text-success fw-bold">{{ attendance_stats.present }}</span>
+                                <span class="text-muted extra-small">Present</span>
+                            </div>
+                            <div>
+                                <span class="d-block text-warning fw-bold">{{ attendance_stats.late }}</span>
+                                <span class="text-muted extra-small">Late</span>
+                            </div>
+                            <div>
+                                <span class="d-block text-danger fw-bold">{{ attendance_stats.absent }}</span>
+                                <span class="text-muted extra-small">Absent</span>
+                            </div>
+                        </div>
+                        <a href="{{ url_for('list_attendance') }}" class="btn btn-outline-success btn-sm rounded-pill w-100">
+                            View Attendance
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Support Tickets Summary -->
+            <div class="col-md-6 col-lg-3">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-body p-4 text-center d-flex flex-column">
+                        <div class="d-inline-flex align-items-center justify-content-center bg-info-subtle text-info-emphasis rounded-circle p-3 mb-3 mx-auto">
+                            <i class="bi bi-headset fs-3"></i>
+                        </div>
+                        <h6 class="fw-bold text-dark mb-1">Support Tickets</h6>
+                        <h3 class="fw-bold text-dark mb-2">{{ ticket_stats.total }}</h3>
+                        <div class="d-flex justify-content-around bg-light p-2 rounded mb-3 small text-center">
+                            <div>
+                                <span class="d-block text-warning fw-bold">{{ ticket_stats.open }}</span>
+                                <span class="text-muted extra-small">Open</span>
+                            </div>
+                            <div>
+                                <span class="d-block text-success fw-bold">{{ ticket_stats.resolved }}</span>
+                                <span class="text-muted extra-small">Resolved</span>
+                            </div>
+                        </div>
+                        <a href="{{ url_for('list_tickets') }}" class="btn btn-outline-info text-dark btn-sm rounded-pill w-100">
+                            Support History
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Recent Activity Overview -->
+        <div class="row g-4">
+            <!-- Recent Leave Requests -->
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-white py-3 d-flex align-items-center justify-content-between">
+                        <h6 class="fw-bold mb-0 text-dark"><i class="bi bi-calendar2-week me-2 text-warning"></i>Recent Leave Requests</h6>
+                        <a href="{{ url_for('apply_leave') }}" class="btn btn-sm btn-outline-primary py-0">New Request</a>
+                    </div>
+                    <div class="card-body p-0">
+                        {% if recent_leaves %}
+                            <div class="list-group list-group-flush">
+                                {% for leave in recent_leaves %}
+                                    <div class="list-group-item p-3 border-bottom">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <span class="fw-bold text-dark">{{ leave.leave_type }}</span>
+                                            {% if leave.status == 'Approved' %}
+                                                <span class="badge bg-success">Approved</span>
+                                            {% elif leave.status == 'Rejected' %}
+                                                <span class="badge bg-danger">Rejected</span>
+                                            {% else %}
+                                                <span class="badge bg-warning text-dark">Pending</span>
+                                            {% endif %}
+                                        </div>
+                                        <div class="small text-muted">
+                                            {{ leave.start_date.strftime('%Y-%m-%d') }} to {{ leave.end_date.strftime('%Y-%m-%d') }}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="text-center py-4 text-muted small">
+                                No leave requests submitted yet.
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Support Tickets -->
+            <div class="col-md-6">
+                <div class="card border-0 shadow-sm h-100">
+                    <div class="card-header bg-white py-3 d-flex align-items-center justify-content-between">
+                        <h6 class="fw-bold mb-0 text-dark"><i class="bi bi-headset me-2 text-info"></i>Recent Support Inquiries</h6>
+                        <a href="{{ url_for('create_ticket') }}" class="btn btn-sm btn-outline-primary py-0">Submit Ticket</a>
+                    </div>
+                    <div class="card-body p-0">
+                        {% if recent_tickets %}
+                            <div class="list-group list-group-flush">
+                                {% for ticket in recent_tickets %}
+                                    <div class="list-group-item p-3 border-bottom">
+                                        <div class="d-flex justify-content-between align-items-center mb-1">
+                                            <span class="fw-bold text-dark">{{ ticket.subject }}</span>
+                                            {% if ticket.status == 'Resolved' %}
+                                                <span class="badge bg-success">Resolved</span>
+                                            {% else %}
+                                                <span class="badge bg-warning text-dark">Open</span>
+                                            {% endif %}
+                                        </div>
+                                        <div class="small text-muted text-truncate" style="max-width: 300px;">
+                                            {{ ticket.message }}
+                                        </div>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            <div class="text-center py-4 text-muted small">
+                                No support tickets submitted yet.
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+{% endblock %}

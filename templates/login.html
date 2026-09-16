@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Sign In | HR Portal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center py-4">
+    <div class="col-md-6 col-lg-5">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white py-4 text-center border-bottom">
+                <div class="d-inline-flex align-items-center justify-content-center bg-primary-subtle text-primary rounded-circle p-3 mb-2">
+                    <i class="bi bi-building-fill-gear fs-2"></i>
+                </div>
+                <h4 class="fw-bold text-dark mb-0">Sign In to HR Portal</h4>
+                <p class="text-muted small mb-0 mt-1">Enter your credentials to access your account</p>
+            </div>
+            <div class="card-body p-4">
+                <!-- Demo Credentials Box -->
+                <div class="alert alert-info border-info-subtle small mb-4">
+                    <div class="fw-bold mb-1"><i class="bi bi-key-fill me-1"></i>Demo Account Credentials:</div>
+                    <ul class="mb-0 ps-3">
+                        <li><strong>HR Manager:</strong> <code>admin</code> / <code>admin123</code> (Full Access)</li>
+                        <li><strong>Staff Employee:</strong> <code>john</code> / <code>john123</code> (Limited Access)</li>
+                    </ul>
+                </div>
+
+                <form action="{{ url_for('login') }}" method="POST" class="needs-validation" novalidate>
+                    <div class="mb-3">
+                        <label for="username" class="form-label fw-semibold">Username <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light text-muted"><i class="bi bi-person"></i></span>
+                            <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="password" class="form-label fw-semibold">Password <span class="text-danger">*</span></label>
+                        <div class="input-group">
+                            <span class="input-group-text bg-light text-muted"><i class="bi bi-lock"></i></span>
+                            <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold d-flex align-items-center justify-content-center gap-2">
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        <span>Sign In</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

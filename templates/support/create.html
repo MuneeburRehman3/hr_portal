@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% block title %}Create Support Ticket | HR Portal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-primary text-white p-4 rounded-top-3">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-headset fs-3"></i>
+                    <div>
+                        <h4 class="fw-bold mb-0">Submit Support Ticket</h4>
+                        <small class="opacity-75">Contact HR for assistance, payroll inquiries, or workplace requests.</small>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST" action="{{ url_for('create_ticket') }}">
+                    <div class="mb-3">
+                        <label for="subject" class="form-label fw-semibold">Subject / Topic <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="subject" name="subject" placeholder="e.g. Payroll inquiry, Equipment request, Address update" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="message" class="form-label fw-semibold">Detailed Message <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="message" name="message" rows="5" placeholder="Describe your question or request in detail so HR can assist you promptly..." required></textarea>
+                    </div>
+
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="{{ url_for('list_tickets') }}" class="btn btn-outline-secondary">
+                            <i class="bi bi-arrow-left me-1"></i> Cancel
+                        </a>
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="bi bi-send-fill me-1"></i> Submit Ticket
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

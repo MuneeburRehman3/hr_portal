@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Post New Job | HR Portal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card border-0 shadow-sm">
+            <div class="card-header bg-white py-3 border-bottom">
+                <div class="d-flex align-items-center gap-2">
+                    <i class="bi bi-briefcase-fill text-primary fs-4"></i>
+                    <h4 class="fw-bold mb-0">Post New Job Opening</h4>
+                </div>
+            </div>
+            <div class="card-body p-4">
+                <form action="{{ url_for('add_job') }}" method="POST" class="needs-validation" novalidate>
+                    <div class="mb-3">
+                        <label for="title" class="form-label fw-semibold">Job Title <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="title" name="title" placeholder="e.g. Senior Python Developer" required>
+                        <div class="invalid-feedback">Please enter the job title.</div>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label for="department" class="form-label fw-semibold">Department</label>
+                            <input type="text" class="form-control" id="department" name="department" placeholder="e.g. Engineering">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="required_skills" class="form-label fw-semibold">Required Skills</label>
+                            <input type="text" class="form-control" id="required_skills" name="required_skills" placeholder="Comma-separated: Python, Flask, SQL, Docker">
+                            <div class="form-text">Separate skills with commas.</div>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="description" class="form-label fw-semibold">Job Description & Requirements <span class="text-danger">*</span></label>
+                        <textarea class="form-control" id="description" name="description" rows="5" placeholder="Detail the job responsibilities, qualifications, and requirements..." required></textarea>
+                        <div class="invalid-feedback">Please enter a job description.</div>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        <a href="{{ url_for('list_jobs') }}" class="btn btn-outline-secondary">Cancel</a>
+                        <button type="submit" class="btn btn-primary d-flex align-items-center gap-1">
+                            <i class="bi bi-check-lg"></i>
+                            <span>Post Job Opening</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
