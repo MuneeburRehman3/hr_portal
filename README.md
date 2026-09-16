@@ -34,18 +34,38 @@ The **Flask HR Portal** is a comprehensive Human Resources management applicatio
 ## 📸 Screenshots
 
 <p align="center">
-  <img src="screenshots/dashboard.png" width="700" alt="HR Admin Insights Dashboard"><br>
-  <em>HR Admin Insights Dashboard showing workforce metrics, attendance status, and recent activity feeds.</em>
+  <img src="screenshots/Home_Page.png" width="700" alt="HR Portal Homepage"><br>
+  <em>HR Portal Homepage featuring system operational status badges and quick action module cards.</em>
 </p>
 
 <p align="center">
-  <img src="screenshots/match-results.png" width="700" alt="AI Candidate Resume Matching & Ranking"><br>
-  <em>AI-powered Candidate Resume Matching page with semantic similarity scores and skill breakdown.</em>
+  <img src="screenshots/Dashboard .png" width="700" alt="HR Insights Dashboard"><br>
+  <em>HR Admin Insights Dashboard summarizing workforce metrics, attendance status, and recent activity feeds.</em>
 </p>
 
 <p align="center">
-  <img src="screenshots/interview-questions.png" width="700" alt="AI-Generated Tailored Interview Questions"><br>
-  <em>AI-generated candidate interview questions tailored to specific skill gaps and matched strengths.</em>
+  <img src="screenshots/Employee Section.png" width="700" alt="Employee Directory"><br>
+  <em>Employee Directory page listing registered organization staff with search, department tags, and management options.</em>
+</p>
+
+<p align="center">
+  <img src="screenshots/Leave Section.png" width="700" alt="Leave Requests Management"><br>
+  <em>Leave Requests Management page showing leave applications, date ranges, duration, and approval actions.</em>
+</p>
+
+<p align="center">
+  <img src="screenshots/Attendence Section.png" width="700" alt="Attendance History Log"><br>
+  <em>Attendance History log tracking daily employee check-ins and attendance check-in status.</em>
+</p>
+
+<p align="center">
+  <img src="screenshots/Recruitment SEction.png" width="700" alt="AI Recruitment & Resume Match Results"><br>
+  <em>AI Recruitment Screening page showing candidate ranking, skill gap analysis, and tailored interview questions.</em>
+</p>
+
+<p align="center">
+  <img src="screenshots/Support Section.png" width="700" alt="Support Ticket Management"><br>
+  <em>Support Management page for tracking employee inquiries and submitting HR response notes.</em>
 </p>
 
 ---
